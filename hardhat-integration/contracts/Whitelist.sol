@@ -21,4 +21,20 @@ contract Whitelist {
     constructor(uint8 _maxWhitelistedAddresses){
         maxWhitelistedAddresses = _maxWhitelistedAddresses;
     }
+
+    // This function adds the address of the sender of the transaction(msg.sender) to the whitelist
+    function addAddressToWhitelist() public {
+
+        // checks if the user is already whitelisted
+        require(!whitelistedAddresses[msg.sender], "Sender has already been whitelisted");
+
+        // checks if numAddressesWhitelisted < maxWhitelistedAddresses, if not then throw an error 
+        require(numAddressesWhitelisted < maxWhitelistedAddresses, "More addresses can't be added, Limit reached!");
+        
+        // adds the address of the sender to whitelistedAddresses array
+        whitelistedAddresses[msg.sender] = true;
+
+        //Increase the number of whitelisted addresses by 1
+        numAddressesWhitelisted += 1;
+    }
 }
