@@ -1,31 +1,37 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat");
+// import ethers from hardhat
+const { ethers } = require("hardhat");
 
+
+/* 
+  We use an async function because we are calling some functions that will take some time to execute 
+  we don't want those function to block or slow down execution
+  Async funtions always returns a promise
+*/
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+  /* 
+    Before we can deploy our smart constract and integrate it with frontend, we need to create an instance 
+    of our smart contract using ethers library
 
-  const lockedAmount = hre.ethers.utils.parseEther("1");
+    getContractFactory in ethers js is an abstraction used to create an instance of whitelist contract to be deployed
+    Once the whitelist contract instance is gotten, it is stored in the whitelistContract variable 
+  */
+    const whitelistContract = await ethers.getContractFactory('Whitelist');
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+    //Deploy the contract
+    // 10 is the maximum number of whitelisted addresses that can be deployed
+    const deployedWhitelistContract = await whitelistContract.deploy(10);
 
-  await lock.deployed();
+    // wait for it to finish deploying 
+    await deployedWhitelistContract.deployed();
 
-  console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
+    // Log the address of the deployed contract to the console 
+    console.log("Whitelist Contract Address: ", deployedWhitelistContract.address);
+
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
