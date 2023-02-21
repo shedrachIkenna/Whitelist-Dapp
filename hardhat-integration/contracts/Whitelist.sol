@@ -14,5 +14,11 @@ contract Whitelist {
     // numAddressesWhitelisted keeps track of the number of addresses that have been whitelisted
     uint8 public numAddressesWhitelisted;
 
-    
+    /* A construtor is executed once in the lifecycle of a smart contract 
+        It is a special function that is executed once a smart contract is deployed */
+    // Setting the max number of whitelisted addresses 
+    // User will put the value at the time of deployment
+    constructor(uint8 _maxWhitelistedAddresses){
+        maxWhitelistedAddresses = _maxWhitelistedAddresses;
+    }
 }
