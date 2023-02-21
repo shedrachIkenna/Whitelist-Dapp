@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 
+// Deployed contract address - 0x6410566cAb7a526feE7a871d471e851E23Ebbd8e
+
 pragma solidity ^0.8.0;
 
 contract Whitelist {
