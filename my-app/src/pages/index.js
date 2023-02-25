@@ -19,6 +19,10 @@ export default function Home() {
           <div>
             5 have already joined the Whitelist
           </div>
+          <button>Render Button</button>
+        </div>
+        <div>
+          <img src="./NFT.png" alt="" />
         </div>
       </div>
     </div>
