@@ -66,7 +66,7 @@ export default function Home() {
     }
   }
 
-  getNumberOfWhitelisted = async () => {
+  const getNumberOfWhitelisted = async () => {
     try{
       const provider = await getProviderOrSigner();
       const whitelistContract = new Contract(
@@ -100,6 +100,7 @@ export default function Home() {
     }
   }
 
+
   const renderButton = () => {
     if (walletConnected){
       if(joinedWhitelist){
@@ -121,6 +122,7 @@ export default function Home() {
   }
 
   useEffect(() => {
+    renderButton()
     if(!walletConnected){
       web3ModalRef.current = new web3Modal({
         network: "goerli",
