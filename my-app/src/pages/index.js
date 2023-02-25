@@ -1,13 +1,15 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import web3Modal from "web3modal";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { providers, Contract } from "ethers";
  
 
 export default function Home() {
 
   const [walletConnected, setWalletConnected] = useState(false);
+
+  const web3ModalRef = useRef();
 
   const getProviderOrSigner = async (needSigner = false) => {
     const provider = await web3ModalRef.current.connect();
@@ -35,7 +37,16 @@ export default function Home() {
     }
   }
 
-  
+useEffect(() => {
+  if(!walletConnected){
+    web3ModalRef.current = new web3Modal({
+      network: "goerli",
+      providerOptions: {},
+      disableInjectedProvider: false,
+    });
+    connectWallet()
+  }
+}, [walletConnected])
 
 
 
