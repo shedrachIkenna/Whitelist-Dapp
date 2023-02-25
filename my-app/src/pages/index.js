@@ -29,6 +29,7 @@ export default function Home() {
   }
 
   const connectWallet = async () => {
+    console.log('connectWallet')
     try{
       await getProviderOrSigner();
       setWalletConnected(true);
@@ -37,16 +38,23 @@ export default function Home() {
     }
   }
 
-useEffect(() => {
-  if(!walletConnected){
-    web3ModalRef.current = new web3Modal({
-      network: "goerli",
-      providerOptions: {},
-      disableInjectedProvider: false,
-    });
-    connectWallet()
+  const renderButton = () => {
+    if (walletConnected){
+      return <button className={styles.button}>Connected</button>
+    } else {
+      return <button className={styles.button} onClick={connectWallet}>Connect Wallet</button>
+    }
   }
-}, [walletConnected])
+
+  useEffect(() => {
+    if(!walletConnected){
+      web3ModalRef.current = new web3Modal({
+        network: "goerli",
+        providerOptions: {},
+        disableInjectedProvider: false,
+      });
+    }
+  }, [walletConnected])
 
 
 
@@ -66,7 +74,7 @@ useEffect(() => {
           <div className={styles.description}>
             5 have already joined the Whitelist
           </div>
-          <button className={styles.button}>Render Button</button>
+          {renderButton()}
         </div>
         <div className={styles.image}>
           <img src="./NFT.png" alt="" />
