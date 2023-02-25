@@ -14,6 +14,8 @@ export default function Home() {
 
   const [loading, setLoading] = useState(false);
 
+  const [numberOfWhitelisted, setNumberOfWhitelisted] = useState(0);
+
   const web3ModalRef = useRef();
 
   const getProviderOrSigner = async (needSigner = false) => {
@@ -38,7 +40,27 @@ export default function Home() {
     try{
       await getProviderOrSigner();
       setWalletConnected(true);
+      checkIfAddressInWhitelist();
     } catch (err){
+      console.error(err);
+    }
+  }
+
+  const checkIfAddressInWhitelist = async () => {
+    try{
+      const signer = await getProviderOrSigner(true);
+      const whitelistContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        signer
+      )
+
+      const address = await signer.getAddress();
+      const _joinedWhitelist = await whitelistContract.whitelistedAddresses(
+        address
+      );
+      setJoinedWhitelist(_joinedWhitelist);
+    } catch(err){
       console.error(err);
     }
   }
