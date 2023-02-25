@@ -13,16 +13,16 @@ export default function Home() {
       </Head>
       <div className={styles.main}>
         <div>
-          <h1>Welcome to the Breakfast Club</h1>
-          <div>
+          <h1 className={styles.title}>Welcome to the Breakfast Club</h1>
+          <div className={styles.description}>
             Its an NFT for collection for Naija Celebs!
           </div>
-          <div>
+          <div className={styles.description}>
             5 have already joined the Whitelist
           </div>
           <button>Render Button</button>
         </div>
-        <div>
+        <div className={styles.image}>
           <img src="./NFT.png" alt="" />
         </div>
       </div>
