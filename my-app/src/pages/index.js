@@ -1,4 +1,5 @@
 import Head from "next/head";
+import styles from "../styles/Home.module.css";
 import web3Modal from "web3modal";
  
 
@@ -10,7 +11,7 @@ export default function Home() {
         <meta name="description" content="Whitelist-Dapp"/>
         <link rel="icon"/>
       </Head>
-      <div>
+      <div className={styles.main}>
         <div>
           <h1>Welcome to the Breakfast Club</h1>
           <div>
@@ -25,6 +26,9 @@ export default function Home() {
           <img src="./NFT.png" alt="" />
         </div>
       </div>
+      <footer className={styles.footer}>
+        Made with &#10084; by Breakfast Club
+      </footer>
     </div>
   );
 }
