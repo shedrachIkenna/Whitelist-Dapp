@@ -3,11 +3,16 @@ import styles from "../styles/Home.module.css";
 import web3Modal from "web3modal";
 import { useState, useEffect, useRef } from "react";
 import { providers, Contract } from "ethers";
+import { WHITELIST_CONTRACT_ADDRESS, abi } from "../constants";
  
 
 export default function Home() {
 
   const [walletConnected, setWalletConnected] = useState(false);
+
+  const [joinedWhitelist, setJoinedWhitelist] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   const web3ModalRef = useRef();
 
@@ -38,9 +43,39 @@ export default function Home() {
     }
   }
 
+  const addAddressToWhitelist = async () => {
+    try{
+      const signer = await getProviderOrSigner(true);
+      const whitelistContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      const _addAddressToWhitelist = await whitelistContract.addAddressToWhitelist();
+      setLoading(true);
+      await _addAddressToWhitelist.wait();
+      setLoading(false);
+      setJoinedWhitelist(true);
+    } catch(err){
+      console.error(err)
+    }
+  }
+
   const renderButton = () => {
     if (walletConnected){
-      return <button className={styles.button}>Connected</button>
+      if(joinedWhitelist){
+        return (
+          <div className={styles.description}>
+            Thanks for joining the Whitelist!
+          </div>
+        )
+      } else if (loading){
+        return  <button className={styles.button}>Loading...</button>
+      } else{
+        return (
+          <button onClick={addAddressToWhitelist} className={styles.button}>Join the Whitelist</button>
+        )
+      }
     } else {
       return <button className={styles.button} onClick={connectWallet}>Connect Wallet</button>
     }
