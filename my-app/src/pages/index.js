@@ -41,6 +41,7 @@ export default function Home() {
       await getProviderOrSigner();
       setWalletConnected(true);
       checkIfAddressInWhitelist();
+      getNumberOfWhitelisted();
     } catch (err){
       console.error(err);
     }
@@ -65,6 +66,21 @@ export default function Home() {
     }
   }
 
+  getNumberOfWhitelisted = async () => {
+    try{
+      const provider = await getProviderOrSigner();
+      const whitelistContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        provider
+      );
+      const _numberOfWhitelisted = await whitelistContract.numAddressesWhitelisted();
+      setNumberOfWhitelisted(_numberOfWhitelisted);
+    } catch(err){
+      console.error(err);
+    }
+  }
+
   const addAddressToWhitelist = async () => {
     try{
       const signer = await getProviderOrSigner(true);
@@ -77,6 +93,7 @@ export default function Home() {
       setLoading(true);
       await _addAddressToWhitelist.wait();
       setLoading(false);
+      await getNumberOfWhitelisted();
       setJoinedWhitelist(true);
     } catch(err){
       console.error(err)
@@ -129,7 +146,7 @@ export default function Home() {
             Its an NFT for collection for Naija Celebs!
           </div>
           <div className={styles.description}>
-            5 have already joined the Whitelist
+            {numberOfWhitelisted} have already joined the Whitelist
           </div>
           {renderButton()}
         </div>
