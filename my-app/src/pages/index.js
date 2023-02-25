@@ -20,7 +20,7 @@ export default function Home() {
           <div className={styles.description}>
             5 have already joined the Whitelist
           </div>
-          <button>Render Button</button>
+          <button className={styles.button}>Render Button</button>
         </div>
         <div className={styles.image}>
           <img src="./NFT.png" alt="" />
