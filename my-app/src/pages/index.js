@@ -7,7 +7,7 @@ import { providers, Contract } from "ethers";
 
 export default function Home() {
 
-  const [walletConnect, setWalletConnect] = useState(false);
+  const [walletConnected, setWalletConnected] = useState(false);
 
   const getProviderOrSigner = async (needSigner = false) => {
     const provider = await web3ModalRef.current.connect();
@@ -26,8 +26,19 @@ export default function Home() {
     return web3Provider;
   }
 
+  const connectWallet = async () => {
+    try{
+      await getProviderOrSigner();
+      setWalletConnected(true);
+    } catch (err){
+      console.error(err);
+    }
+  }
 
   
+
+
+
   return (
     <div>
       <Head>
